@@ -134,7 +134,7 @@ Your BALANCER_GUID value you will set after running a command.
 # How to run
 
 First make sure you run `./build.sh` in the `balancer` dir and then the `web` 
-directory so your binary files are ready. Then run each of these one by one.
+directory so your binary files are ready. Then run each of commands below one by one.
 
 The `./vm env youremail yourdomains` one is very special. Your email is the email
 you want to use for the letsencrypt cert. And yourdomains is a comma separated list
@@ -151,6 +151,14 @@ letsencrypt will be able to make a cert.
 So I like to run this list one by one but you could also place these in
 a file and run it all at once!
 
+It also picks a random guid for you and outputs:
+
+```
+fmt.Println("export BALANCER_GUID=" + guid)
+```
+
+So that's how you get that value.
+
 ```
 ./vm psql
 ./vm cp ../aa.conf /etc/systemd/system/ root
@@ -164,3 +172,11 @@ a file and run it all at once!
 ./vm reload web-3000
 ./vm reload web-3001
 ```
+
+# deploy
+
+```
+./vm deploy-web yourdomain
+```
+
+That's all you need to run to hit that special url after it uploads the new binary.
