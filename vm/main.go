@@ -47,7 +47,7 @@ Requires=network-online.target
 User=aa
 Group=aa
 EnvironmentFile=/etc/systemd/system/aa.conf
-ExecStart=/home/andrew/web-%s run %s
+ExecStart=/home/aa/web-%s run %s
 Restart=on-failure
 RestartSec=1s
 
@@ -61,6 +61,15 @@ WantedBy=multi-user.target
 			Scp(who, port, ip, fmt.Sprintf("/etc/systemd/system/web-%s.service", port))
 			os.Remove(port)
 		}
+	} else if command == "deploy-balancer" {
+		Scp("aa", "../balancer/balancer", ip, "/home/aa/balancer2")
+		/*
+			ls -l /home/andrewarrow
+			systemctl stop caddy.service
+			mv caddy2 /home/andrewarrow/caddy
+			systemctl start caddy.service
+			ls -l /home/andrewarrow
+		*/
 	} else if command == "env" {
 		guid := PseudoUuid()
 		email := os.Args[2]
