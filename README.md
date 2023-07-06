@@ -1,7 +1,7 @@
 # devops
 This code will setup a new VM with postgres, a load balancer, and a web app that can query from the postgres running on localhost.
 
-I use it with google cloud and select the `e2-micro` VM so it's in the free tier.
+I use it with [google cloud](https://cloud.google.com/) and select the `e2-micro` VM so it's in the free tier.
 
 You have to put it in `us-west1` (Oregon) or `us-central1` (Iowa).
 
@@ -13,7 +13,7 @@ I've had links on the front page of hacker news and it never went down, didn't
 even max out the cpu.
 
 # balancer
-The load balancer serves `one main purpose`: you can deploy a new version of the web app
+The load balancer serves `one` main purpose: you can deploy a new version of the web app
 with zero down time.
 
 I don't use google's real load balancers or their real postgres because, free!
@@ -23,6 +23,85 @@ reverse proxy would give the user a 500 error. That might not seem that bad but 
 a production site, I want to be able to deploy many times a day and not affect
 users ever.
 
+The other purpose is to run on port 443 and handle SSL and the certs from
+[letsencrypt](https://letsencrypt.org/). It also runs on port 80 and just 
+forwards any request on 80 to 443. i.e. you can't make an http request.
+Everything forwards to https.
+
+So it runs two golang [httputil.ReverseProxy](https://pkg.go.dev/net/http/httputil#NewSingleHostReverseProxy) things. One on port 3000 and another on 3001.
+
+The balancer sends 100% of traffic to either 3000 or 3001. It never splits up
+the traffic 50% to each because that's not the point. The point is to be able to
+do this:
+
+```
+scp web aa@YOUR-IP:
+ssh aa@YOUR-IP 'bash -s' < script-3001.sh
+```
+
+and script-3001.sh is:
+
+```
+systemctl stop web-3001.service
+mv /home/aa/web /home/aa/web-3001
+systemctl start web-3001.service
+```
+
+It's safe to run `systemctl stop web-3001.service` because 0% of traffic is
+going it to. 100% is going to 3000. That's the default and how it starts.
+
+The logic to do a deploy hits your site at a special url. The url has a guid
+so no one will be able to guess this url and use it but you.
+
+Like this:
+
+```
+https://many.pw/f0e3267a-376c-4a21-8f53-f4b5192357c6/3000
+```
+
+Note `f0e3267a-376c-4a21-8f53-f4b5192357c6` is not my real guid! Keep your
+guid secret. Anyway that route of /guid/3000 makes the balancer change to
+the other one it's not using. If it's using 3000 it goes to 3001. If it's
+on 3001 that command makes it go back to 3000.
+
+This is done with:
+
+```
+if WebPort == 3000 {
+  WebPort++
+} else {
+  WebPort--
+}
+ReverseProxyWeb = makeReverseProxy(WebPort, false)
+```
+
+So there is a little script to query the current WebPort value and know
+which one is safe to run `systemctl stop web-%s.service` on where %s gets
+filled in as either 3000 or 3001
+
+There are two systemd service files:
+
+```
+ExecStart=/home/aa/web-3000 run 3000
+```
+```
+ExecStart=/home/aa/web-3001 run 3001
+```
+
+Notice they use a different binary. This allows us to scp a file called `web`
+to /home/aa/ and then called `systemctl stop` on the right service. THEN
+you can `mv web web-3000` or `mv web web-3001` because if the service is
+running you CANNOT replace the binary.
+
+You build on your local machine:
+
+```
+GOOS=linux GOARCH=amd64 go build
+```
+
+And boom, upload new version, stop the right service, rename the file,
+start back up the new service, and then hit that special URL and all
+of a sudden users get the new version!
 
 # env vars
 
