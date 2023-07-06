@@ -1,0 +1,6 @@
+go.sum
+balancer/balancer
+web/assets/css/tail.min.css
+web/assets/images/
+web/web
+.DS_Store
