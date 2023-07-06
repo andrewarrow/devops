@@ -20,6 +20,7 @@ ssh-keygen -t ed25519 -C root@devops
 # Use
 
 ```
+./vm psql
 ./vm cp ../aa.conf /etc/systemd/system/ root
 ./vm cp ../balancer/balancer.service /etc/systemd/system/ root
 ./vm cp ../balancer/balancer /home/aa/ aa

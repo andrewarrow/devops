@@ -61,6 +61,10 @@ WantedBy=multi-user.target
 			Scp(who, port, ip, fmt.Sprintf("/etc/systemd/system/web-%s.service", port))
 			os.Remove(port)
 		}
+	} else if command == "psql" {
+		Run("root", ip, "apt install postgresql")
+		Run("root", ip, `psql --user=postgres -c "CREATE USER fred WITH SUPERUSER PASSWORD 'fred'"`)
+		Run("root", ip, `psql --user=postgres -c "CREATE database feedback`)
 	} else if command == "deploy-web" {
 		domain := os.Args[2]
 		DeployWeb(domain, ip)
