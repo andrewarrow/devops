@@ -63,13 +63,9 @@ WantedBy=multi-user.target
 		}
 	} else if command == "deploy-balancer" {
 		Scp("aa", "../balancer/balancer", ip, "/home/aa/balancer2")
-		/*
-			ls -l /home/andrewarrow
-			systemctl stop caddy.service
-			mv caddy2 /home/andrewarrow/caddy
-			systemctl start caddy.service
-			ls -l /home/andrewarrow
-		*/
+		Run("root", ip, "systemctl stop balancer.service")
+		Run("aa", ip, `"mv /home/aa/balancer2 /home/aa/balancer"`)
+		Run("root", ip, "systemctl start balancer.service")
 	} else if command == "env" {
 		guid := PseudoUuid()
 		email := os.Args[2]
