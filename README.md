@@ -89,7 +89,7 @@ ExecStart=/home/aa/web-3001 run 3001
 ```
 
 Notice they use a different binary. This allows us to scp a file called `web`
-to /home/aa/ and then called `systemctl stop` on the right service. THEN
+to /home/aa/ and then call `systemctl stop` on the right service. THEN
 you can `mv web web-3000` or `mv web web-3001` because if the service is
 running you CANNOT replace the binary.
 
