@@ -84,6 +84,7 @@ WantedBy=multi-user.target
 			run := fmt.Sprintf(`"echo '%s' >> /etc/systemd/system/aa.conf"`, item)
 			Run(who, ip, run)
 		}
+		fmt.Println("export BALANCER_GUID=" + guid)
 	}
 }
 
