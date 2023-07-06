@@ -57,7 +57,8 @@ WantedBy=multi-user.target
 	} else if command == "psql" {
 		Run("root", ip, "apt install postgresql")
 		Run("root", ip, `psql --user=postgres -c "CREATE USER fred WITH SUPERUSER PASSWORD 'fred'"`)
-		Run("root", ip, `psql --user=postgres -c "CREATE database feedback`)
+		Run("root", ip, `psql --user=postgres -c "CREATE database feedback"`)
+		Run("root", ip, `psql --user=postgres -c "CREATE EXTENSION IF NOT EXISTS citext"`)
 	} else if command == "deploy-web" {
 		domain := os.Args[2]
 		DeployWeb(domain, ip)
