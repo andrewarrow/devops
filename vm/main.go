@@ -22,9 +22,9 @@ func main() {
 		ip := os.Getenv("VM_IP")
 		file := os.Args[2]
 		dest := os.Args[3]
-		// scp web andrewarrow@34.83.130.106:
-		b, err := exec.Command("scp", "-i", "~/.ssh/"+key, file, "root@"+ip+":"+dest).CombinedOutput()
-		fmt.Println(string(b), err)
+		who := os.Args[4]
+		b, err := exec.Command("scp", "-i", "~/.ssh/"+key, file, who+"@"+ip+":"+dest).CombinedOutput()
+		fmt.Println(string(b), err == nil)
 	} else if command == "" {
 	} else if command == "" {
 	}

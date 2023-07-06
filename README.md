@@ -15,3 +15,9 @@ export VM_IP="34.83.130.106"
 ```
 ssh-keygen -t ed25519 -C aa@devops
 ```
+# Use
+
+```
+./vm cp ../aa.conf /etc/systemd/system/ root
+./vm cp ../balancer/balancer /home/aa/ aa
+```
