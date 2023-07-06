@@ -39,6 +39,14 @@ func main() {
 				"bash -s", "<<<", item).CombinedOutput()
 			fmt.Println(string(b), err == nil)
 		}
-	} else if command == "" {
+	} else if command == "env" {
+		guid := PseudoUuid()
+		email := os.Args[2]
+		domains := os.Args[3]
+		env := `BALANCER_GUID="%s"
+BALANCER_EMAIL="%s"
+BALANCER_DOMAINS="%s"`
+		envSend := fmt.Sprintf(env, guid, email, domains)
+		fmt.Println(envSend)
 	}
 }
