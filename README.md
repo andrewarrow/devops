@@ -180,3 +180,10 @@ So that's how you get that value.
 ```
 
 That's all you need to run to hit that special url after it uploads the new binary.
+
+And you should not need to do this often because it will require downtime but
+if you want to make logic changes to the balancer you can deploy it with:
+
+```
+./vm deploy-balancer
+```
