@@ -35,9 +35,7 @@ func main() {
 			fmt.Sprintf("systemctl enable --now %s.service", service),
 			fmt.Sprintf("systemctl restart %s.service", service)}
 		for _, item := range list {
-			b, err := exec.Command("ssh", "-i", "~/.ssh/"+who, who+"@"+ip,
-				"bash -s", "<<<", item).CombinedOutput()
-			fmt.Println(string(b), err == nil)
+			Run(who, ip, item)
 		}
 	} else if command == "env" {
 		guid := PseudoUuid()
@@ -47,12 +45,14 @@ func main() {
 			fmt.Sprintf(`BALANCER_EMAIL=%s`, email),
 			fmt.Sprintf(`BALANCER_DOMAINS=%s`, domains)}
 		for _, item := range list {
-			fmt.Println(item)
 			run := fmt.Sprintf(`"echo '%s' >> /etc/systemd/system/aa.conf"`, item)
-			fmt.Println(run)
-			b, err := exec.Command("ssh", "-i", "~/.ssh/"+who, who+"@"+ip,
-				"bash -s", "<<<", run).CombinedOutput()
-			fmt.Println(string(b), err == nil)
+			Run(who, ip, run)
 		}
 	}
+}
+
+func Run(who, ip, item string) {
+	b, err := exec.Command("ssh", "-i", "~/.ssh/"+who, who+"@"+ip,
+		"bash -s", "<<<", item).CombinedOutput()
+	fmt.Println(string(b), err == nil)
 }
