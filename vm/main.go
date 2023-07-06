@@ -17,15 +17,28 @@ func main() {
 	}
 	command := os.Args[1]
 
+	ip := os.Getenv("VM_IP")
+
 	if command == "cp" {
-		key := os.Getenv("SSH_KEY")
-		ip := os.Getenv("VM_IP")
 		file := os.Args[2]
 		dest := os.Args[3]
 		who := os.Args[4]
-		b, err := exec.Command("scp", "-i", "~/.ssh/"+key, file, who+"@"+ip+":"+dest).CombinedOutput()
+		b, err := exec.Command("scp", "-i", "~/.ssh/"+who, file, who+"@"+ip+":"+dest).CombinedOutput()
 		fmt.Println(string(b), err == nil)
-	} else if command == "" {
+	} else if command == "reload" {
+		who := "root"
+		service := os.Args[2]
+		// systemctl daemon-reload
+		// systemctl enable --now web.service
+		// systemctl restart web.service
+		list := []string{"systemctl daemon-reload",
+			fmt.Sprintf("systemctl enable --now %s.service", service),
+			fmt.Sprintf("systemctl restart %s.service", service)}
+		for _, item := range list {
+			b, err := exec.Command("ssh", "-i", "~/.ssh/"+who, who+"@"+ip,
+				"bash -s", "<<<", item).CombinedOutput()
+			fmt.Println(string(b), err == nil)
+		}
 	} else if command == "" {
 	}
 }
