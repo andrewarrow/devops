@@ -1,4 +1,28 @@
 # devops
+This code will setup a new VM with postgres, a load balancer, and a web app that can query from the postgres running on localhost.
+
+I use it with google cloud and select the `e2-micro` VM so it's in the free tier.
+
+You have to put it in `us-west1` (Oregon) or `us-central1` (Iowa).
+
+Your boot disk has to be `standard persistent disk` up to 30GB.
+
+So you get a 30GB hard drive, 1GB ram, and two `AMD EPYC 7B12 2250 MHz processors`. 
+That's enough to run a nice little site with plenty of traffic. 
+I've had links on the front page of hacker news and it never went down, didn't
+even max out the cpu.
+
+# balancer
+The load balancer serves `one main purpose`: you can deploy a new version of the web app
+with zero down time.
+
+I don't use google's real load balancers or their real postgres because, free!
+
+Without the balancer if you deployed the web app, for a second or two, the
+reverse proxy would give the user a 500 error. That might not seem that bad but for
+a production site, I want to be able to deploy many times a day and not affect
+users ever.
+
 
 # env vars
 
