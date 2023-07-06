@@ -103,29 +103,58 @@ And boom, upload new version, stop the right service, rename the file,
 start back up the new service, and then hit that special URL and all
 of a sudden users get the new version!
 
-# env vars
-
-```
-export BALANCER_GUID="dd9b7cc1-9dbf-4fcd-ab2e-fcae5d9d6a38"
-export BALANCER_EMAIL="you@somewhere.com"
-export BALANCER_DOMAINS="mydomain1.com,mydomain2.com"
-
-export VM_IP="34.83.130.106"
-```
-
 # key gen
+You need to run:
+
 ```
 # save as ~/.ssh/aa
 ssh-keygen -t ed25519 -C aa@devops
 # save as ~/.ssh/root
 ssh-keygen -t ed25519 -C root@devops
 ```
-# Use
+
+You could change `aa` to whatever username you like, but I say might as
+well just use aa it's a nice username.
+
+The public version `aa.pub` and `root.pub` need to be added to your google
+VM's list of SSH keys.
+
+# env vars
+
+```
+export BALANCER_GUID=?
+export VM_IP=YOUR-IP
+```
+
+You can get your IP from the google VM (it's free!). Isn't that amazing. A free IP in
+today's world.
+
+Your BALANCER_GUID value you will set after running a command.
+
+# How to run
+
+First make sure you run `./build.sh` in the `balancer` dir and then the `web` 
+directory so your binary files are ready. Then run each of these one by one.
+
+The `./vm env youremail yourdomains` one is very special. Your email is the email
+you want to use for the letsencrypt cert. And yourdomains is a comma separated list
+of domains. For example:
+
+```
+./vm env fred@gmail.com good.com,great.co,other-domain.org
+```
+
+As long as your have an A record pointing to the IP of your google VM in
+each domain,
+letsencrypt will be able to make a cert.
+
+So I like to run this list one by one but you could also place these in
+a file and run it all at once!
 
 ```
 ./vm psql
 ./vm cp ../aa.conf /etc/systemd/system/ root
-./vm env
+./vm env youremail yourdomains
 ./vm cp ../balancer/balancer.service /etc/systemd/system/ root
 ./vm cp ../balancer/balancer /home/aa/ aa
 ./vm reload balancer

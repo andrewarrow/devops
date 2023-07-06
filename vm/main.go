@@ -28,15 +28,8 @@ func main() {
 		Scp(who, file, ip, dest)
 	} else if command == "reload" {
 		service := os.Args[2]
-		// systemctl daemon-reload
-		// systemctl enable --now web.service
-		// systemctl restart web.service
-		list := []string{"systemctl daemon-reload",
-			fmt.Sprintf("systemctl enable --now %s.service", service),
-			fmt.Sprintf("systemctl restart %s.service", service)}
-		for _, item := range list {
-			Run(who, ip, item)
-		}
+		ReloadService(service, ip)
+		Run(who, ip, "mkdir /certs")
 	} else if command == "web" {
 		file := `[Unit]
 Description=web%s
