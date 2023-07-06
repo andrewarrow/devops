@@ -43,11 +43,13 @@ func main() {
 		guid := PseudoUuid()
 		email := os.Args[2]
 		domains := os.Args[3]
-		list := []string{fmt.Sprintf(`BALANCER_GUID="%s"`, guid),
-			fmt.Sprintf(`BALANCER_EMAIL="%s"`, email),
-			fmt.Sprintf(`BALANCER_DOMAINS="%s"`, domains)}
+		list := []string{fmt.Sprintf(`BALANCER_GUID=%s`, guid),
+			fmt.Sprintf(`BALANCER_EMAIL=%s`, email),
+			fmt.Sprintf(`BALANCER_DOMAINS=%s`, domains)}
 		for _, item := range list {
-			run := fmt.Sprintf("echo '%s' >> /etc/systemd/system/aa.conf", item)
+			fmt.Println(item)
+			run := fmt.Sprintf(`"echo '%s' >> /etc/systemd/system/aa.conf"`, item)
+			fmt.Println(run)
 			b, err := exec.Command("ssh", "-i", "~/.ssh/"+who, who+"@"+ip,
 				"bash -s", "<<<", run).CombinedOutput()
 			fmt.Println(string(b), err == nil)
