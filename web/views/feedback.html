@@ -1,0 +1,43 @@
+
+<div class="grid grid-cols-2 gap-4 nice p-5">
+  <div>
+    <p>
+    Feedback is a "go on rails" framework that has routes, controllers, views, layouts,
+    and a non-ORM database query/update system.
+    </p>
+  </div>
+  <div>
+    <p>
+    It was started on Feb 2, 2020 and is being actively maintained. The latest
+    commit was Jul 5, 2023.
+    </p>
+  </div>
+</div>
+
+<div>
+    {{ index . "bottom" }}
+</div>
+
+<div class="grid grid-cols-2 gap-4 nice p-5">
+  <div>
+    <p>
+    To define routes you first pick a top level name:
+    <div class="text-xs pt-5 font-mono">
+            r.Paths["/"] = app.HandleWelcome<br/>
+            r.Paths["aliens"] = app.HandleAliens<br/>
+            r.Paths["species"] = app.HandleSpecies<br/>
+            r.Paths["planets"] = app.HandlePlanets<br/>
+    </div>
+    </p>
+  </div>
+  <div>
+    <p class="pb-5">
+    Every POST, PUT, GET, DELETE, PATCH route for /aliens will be in app.HandleAliens.
+    And you get a max of two levels of /aliens/:second/:third
+    </p>
+    <p>
+    If you need /aliens/:second/:third/:fourth rethink what you are doing a make
+    a new top level name and break it up better.
+    </p>
+  </div>
+</div>

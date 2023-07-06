@@ -1,0 +1,69 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="/assets/css/tail.min.css?id={{ index . "build"}}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script> function $(id) { return document.getElementById(id); } </script>
+  <script src="/assets/javascript/main.js?id={{ index . "build"}}"></script>
+  <title>{{ index . "title"}}</title>
+</head>
+
+<body>
+<!-- Table Section -->
+<div class="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
+  <!-- Card -->
+  <div class="flex flex-col">
+    <div class="-m-1.5 overflow-x-auto">
+      <div class="p-1.5 min-w-full inline-block align-middle">
+        <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden default:bg-slate-900 default:border-gray-700">
+          <!-- Header -->
+          <div class="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-b border-gray-200 default:border-gray-700">
+            <div>
+              <h2 class="text-xl font-semibold text-gray-800 default:text-gray-200">
+                      <a href="/" class="no-ajax">many.pw</a>
+              </h2>
+              <!--
+              <p class="text-sm text-gray-600 default:text-gray-400">
+              <a class="underline" href="/">item1</a>
+              <a class="underline mx-2" href="/">2</a>
+              <a class="underline mx-2" href="/">3</a>
+                      {{$user := index . "user"}}
+                      {{ if index $user "admin" }}
+              <a class="underline mx-2 no-ajax" href="/admin">admin</a>
+                      {{ end }}
+              </p>
+              -->
+            </div>
+
+            <div>
+              <div class="gap-x-2">
+                      {{ template "_nav_user" . }}
+              </div>
+            </div>
+          </div>
+          <!-- End Header -->
+        </div>
+      </div>
+    </div>
+    <div class="-m-1.5 overflow-x-auto">
+      <div class="p-1.5 min-w-full inline-block align-middle">
+        <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden default:bg-slate-900 default:border-gray-700">
+    {{ if index . "admin_back"}}
+    <div style="background-color: blue; color: white; text-align: center;"><a class="no-ajax" href="/admin/user-back-to-admin">You are still admin, click here to go back.</a></div>
+    {{ end }}
+    <div id="flash" style="background-color: red; color: white; text-align: center;">{{index . "flash"}}</div>
+     <div id="feedback-ajax">
+            {{ index . "content" }}
+     </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Card -->
+</div>
+<!-- End Table Section -->
+</body>
+</html>
