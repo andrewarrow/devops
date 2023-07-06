@@ -1,5 +1,6 @@
 go.sum
 balancer/balancer
+vm/vm
 web/assets/css/tail.min.css
 web/assets/images/
 web/web
