@@ -61,6 +61,9 @@ WantedBy=multi-user.target
 			Scp(who, port, ip, fmt.Sprintf("/etc/systemd/system/web-%s.service", port))
 			os.Remove(port)
 		}
+	} else if command == "deploy-web" {
+		domain := os.Args[2]
+		DeployWeb(domain, ip)
 	} else if command == "deploy-balancer" {
 		Scp("aa", "../balancer/balancer", ip, "/home/aa/balancer2")
 		Run("root", ip, "systemctl stop balancer.service")

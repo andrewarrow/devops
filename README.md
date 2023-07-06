@@ -22,4 +22,6 @@ ssh-keygen -t ed25519 -C root@devops
 ```
 ./vm cp ../aa.conf /etc/systemd/system/ root
 ./vm cp ../balancer/balancer /home/aa/ aa
+./vm cp ../web/web /home/aa/web-3000 aa
+./vm cp ../web/web /home/aa/web-3001 aa
 ```
