@@ -18,15 +18,15 @@ func main() {
 	command := os.Args[1]
 
 	ip := os.Getenv("VM_IP")
+	who := "root"
 
 	if command == "cp" {
 		file := os.Args[2]
 		dest := os.Args[3]
-		who := os.Args[4]
+		who = os.Args[4]
 		b, err := exec.Command("scp", "-i", "~/.ssh/"+who, file, who+"@"+ip+":"+dest).CombinedOutput()
 		fmt.Println(string(b), err == nil)
 	} else if command == "reload" {
-		who := "root"
 		service := os.Args[2]
 		// systemctl daemon-reload
 		// systemctl enable --now web.service
@@ -43,10 +43,14 @@ func main() {
 		guid := PseudoUuid()
 		email := os.Args[2]
 		domains := os.Args[3]
-		env := `BALANCER_GUID="%s"
-BALANCER_EMAIL="%s"
-BALANCER_DOMAINS="%s"`
-		envSend := fmt.Sprintf(env, guid, email, domains)
-		fmt.Println(envSend)
+		list := []string{fmt.Sprintf(`BALANCER_GUID="%s"`, guid),
+			fmt.Sprintf(`BALANCER_EMAIL="%s"`, email),
+			fmt.Sprintf(`BALANCER_DOMAINS="%s"`, domains)}
+		for _, item := range list {
+			run := fmt.Sprintf("echo '%s' >> /etc/systemd/system/aa.conf", item)
+			b, err := exec.Command("ssh", "-i", "~/.ssh/"+who, who+"@"+ip,
+				"bash -s", "<<<", run).CombinedOutput()
+			fmt.Println(string(b), err == nil)
+		}
 	}
 }
