@@ -12,6 +12,8 @@ That's enough to run a nice little site with plenty of traffic.
 I've had links on the front page of hacker news and it never went down, didn't
 even max out the cpu.
 
+Use Ubuntu 22.04 LTS x86/64, amd64 jammy image
+
 # balancer
 The load balancer serves `one` main purpose: you can deploy a new version of the web app
 with zero down time.
