@@ -61,8 +61,7 @@ WantedBy=multi-user.target
 		Run("root", ip, `'psql --user=postgres -c "CREATE EXTENSION IF NOT EXISTS citext"'`)
 	} else if command == "psql-backup" {
 		db := os.Args[2]
-		s := `"pg_dump postgres://fred:fred@localhost:5432/%s"`
-		Run("root", ip, fmt.Sprintf(s, db))
+		Backup(db, ip)
 	} else if command == "deploy-web" {
 		domain := os.Args[2]
 		DeployWeb(domain, ip)
