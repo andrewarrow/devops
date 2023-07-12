@@ -27,11 +27,13 @@ func storeInBucket(data []byte, filename string) {
 	bucket := os.Getenv("STORAGE_BUCKET")
 	keyPath := os.Getenv("KEY_PATH")
 
-	gcsClient, _ := storage.NewClient(context.Background(),
+	gcsClient, err := storage.NewClient(context.Background(),
 		option.WithCredentialsFile(keyPath))
+	fmt.Println(err, bucket, keyPath)
 
 	w := gcsClient.Bucket(bucket).Object(filename).NewWriter(context.Background())
 	w.ContentType = "application/octet-stream"
-	w.Write(data)
+	_, err = w.Write(data)
+	fmt.Println("write", err)
 	w.Close()
 }
