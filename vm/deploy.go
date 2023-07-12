@@ -32,7 +32,7 @@ func DeployWeb(domain, ip string) {
 	os.Remove("script-3001.sh")
 }
 
-var runScriptDeploy = `ssh aa@%s 'bash -s' < script-%s.sh`
+var runScriptDeploy = `ssh -i ~/.ssh/aa aa@%s 'bash -s' < script-%s.sh`
 var runScript = `systemctl stop web-%s.service
 mv /home/aa/web /home/aa/web-%s
 systemctl start web-%s.service
