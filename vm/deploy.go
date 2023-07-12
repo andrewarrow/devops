@@ -33,9 +33,9 @@ func DeployWeb(domain, ip string) {
 }
 
 var runScriptDeploy = `ssh -i ~/.ssh/aa aa@%s 'bash -s' < script-%s.sh`
-var runScript = `systemctl stop web-%s.service
+var runScript = `sudo systemctl stop web-%s.service
 mv /home/aa/web /home/aa/web-%s
-systemctl start web-%s.service
+sudo systemctl start web-%s.service
 `
 
 var deployScript = `#!/bin/bash
