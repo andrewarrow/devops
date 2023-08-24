@@ -7,9 +7,15 @@ import (
 	"os/exec"
 )
 
+func DeployWeb2(domain, ip string) {
+	guid := os.Getenv("BALANCER_GUID")
+	script := fmt.Sprintf(deployScript, domain, guid, domain, guid, domain, guid)
+	fmt.Println(script)
+}
 func DeployWeb(domain, ip string) {
 	guid := os.Getenv("BALANCER_GUID")
 	script := fmt.Sprintf(deployScript, domain, guid, domain, guid, domain, guid)
+	//fmt.Println(script)
 
 	deploy3000 := fmt.Sprintf(runScriptDeploy, ip, "3000")
 	deploy3001 := fmt.Sprintf(runScriptDeploy, ip, "3001")
@@ -46,7 +52,7 @@ check_result() {
   elif [ "$1" == "3001" ]; then
     "$script_dir/deploy-3000.sh"
   else
-    echo "Invalid result: $1"
+    "$script_dir/deploy-3000.sh"
   fi
 }
 

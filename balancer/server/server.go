@@ -40,6 +40,13 @@ func makeReverseProxy(port int, ws bool) *httputil.ReverseProxy {
 
 func handleRequest(writer http.ResponseWriter, request *http.Request) {
 	path := request.URL.Path
+	//request.Header.Get("X-CSRF-Token")
+	request.Header.Set("X-Forwarded-Proto", "https")
+	/*
+		for key, values := range request.Header {
+			fmt.Printf("%s: %s\n", key, values)
+			request.Header.Set()
+		}*/
 
 	if strings.HasPrefix(path, "/"+BalancerGuid) {
 		tokens := strings.Split(path, "/")
