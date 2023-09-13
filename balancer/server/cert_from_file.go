@@ -37,14 +37,15 @@ func ServeCertFromFile() {
 }
 
 func loadTLSConfigFromFile(filePath string) (*tls.Config, error) {
-	tlsconf := &tls.Config{}
 
-	tlsconf.Certificates = make([]tls.Certificate, 1)
-	cert, err := tls.LoadX509KeyPair(filePath, filePath)
-	if err != nil {
-		return nil, err
+	intermediateCert, err := tls.LoadX509KeyPair(filePath, "")
+	fmt.Println(err)
+	serverCert, err := tls.LoadX509KeyPair(filePath, filePath)
+	fmt.Println(err)
+
+	tlsconf := &tls.Config{
+		Certificates: []tls.Certificate{serverCert, intermediateCert},
 	}
-	tlsconf.Certificates[0] = cert
 
 	return tlsconf, nil
 }
