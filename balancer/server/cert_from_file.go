@@ -38,9 +38,9 @@ func ServeCertFromFile() {
 
 func loadTLSConfigFromFile(filePath string) (*tls.Config, error) {
 
-	intermediateCert, err := tls.LoadX509KeyPair(filePath, "")
+	intermediateCert, err := tls.LoadX509KeyPair("/certs/int.crt", "")
 	fmt.Println(err)
-	serverCert, err := tls.LoadX509KeyPair(filePath, filePath)
+	serverCert, err := tls.LoadX509KeyPair("/certs/server.crt", "/certs/file.key")
 	fmt.Println(err)
 
 	tlsconf := &tls.Config{

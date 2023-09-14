@@ -56,6 +56,8 @@ WantedBy=multi-user.target
 		}
 	} else if command == "psql" {
 		//Run("root", ip, "apt install -y postgresql")
+		// CREATE EXTENSION postgis;
+		// CREATE EXTENSION postgis_topology;
 		Run("root", ip, `'psql --user=postgres -c "CREATE USER fred WITH SUPERUSER PASSWORD 'fred'"'`)
 		Run("root", ip, `'psql --user=postgres -c "CREATE database feedback"'`)
 		Run("root", ip, `'psql --user=postgres -c "CREATE EXTENSION IF NOT EXISTS citext"'`)
@@ -82,6 +84,8 @@ WantedBy=multi-user.target
 			Run(who, ip, run)
 		}
 		fmt.Println("export BALANCER_GUID=" + guid)
+	} else {
+		fmt.Println("hi")
 	}
 }
 

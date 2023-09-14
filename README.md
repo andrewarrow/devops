@@ -1,3 +1,9 @@
+CREATE USER fred WITH SUPERUSER PASSWORD 'fred'
+psql --user=postgres -c "CREATE database feedback"
+CREATE EXTENSION IF NOT EXISTS citext
+
+
+
 # devops
 This code will setup a new VM with postgres, a load balancer, and a web app that can query from the postgres running on localhost.
 

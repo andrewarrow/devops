@@ -15,8 +15,8 @@ import (
 func Run(db string) {
 	for {
 		fmt.Println("Running")
-		time.Sleep(time.Hour * 24)
 		RunOnce(db)
+		time.Sleep(time.Hour * 24)
 	}
 }
 
