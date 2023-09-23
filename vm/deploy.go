@@ -7,11 +7,18 @@ import (
 	"os/exec"
 )
 
-func DeployWeb2(domain, ip string) {
-	guid := os.Getenv("BALANCER_GUID")
-	script := fmt.Sprintf(deployScript, domain, guid, domain, guid, domain, guid)
-	fmt.Println(script)
+func DeployWebSingle(ip, port string) {
+	deploy3001 := fmt.Sprintf(runScriptDeploy, ip, "3001")
+	script3001 := fmt.Sprintf(runScript, "3001", "3001", "3001")
+	ioutil.WriteFile("deploy-3001.sh", []byte(deploy3001), 0755)
+	ioutil.WriteFile("script-3001.sh", []byte(script3001), 0755)
+	Scp("aa", "../web/web", ip, "/home/aa/web")
+	b, err := exec.Command("./deploy-3001.sh").CombinedOutput()
+	fmt.Println(string(b), err == nil)
+	os.Remove("deploy-3001.sh")
+	os.Remove("script-3001.sh")
 }
+
 func DeployWeb(domain, ip string) {
 	guid := os.Getenv("BALANCER_GUID")
 	script := fmt.Sprintf(deployScript, domain, guid, domain, guid, domain, guid)
