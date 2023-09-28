@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"io/ioutil"
@@ -9,6 +10,9 @@ import (
 	"time"
 
 	"cloud.google.com/go/storage"
+	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/service/s3"
+	"github.com/aws/aws-sdk-go/aws"
 	"google.golang.org/api/option"
 )
 
@@ -29,10 +33,34 @@ func RunOnce(db string) {
 	fmt.Println(string(b), err)
 	filename = filename + ".gz"
 	asBytes, _ := ioutil.ReadFile(filename)
-	storeInBucket(asBytes, filename)
+	//storeInGoogleBucket(asBytes, filename)
+	storeInAwsBucket(asBytes, filename)
 }
 
-func storeInBucket(data []byte, filename string) {
+func storeInAwsBucket(data []byte, filename string) {
+
+	bucketName := os.Getenv("STORAGE_BUCKET")
+
+	cfg, err := config.LoadDefaultConfig(context.Background(),
+		config.WithRegion("us-west-2"),
+	)
+	fmt.Println(err)
+
+	client := s3.NewFromConfig(cfg)
+
+	dataReader := bytes.NewReader(data)
+
+	putObjectInput := &s3.PutObjectInput{
+		Bucket: aws.String(bucketName),
+		Key:    aws.String(filename),
+		Body:   dataReader,
+	}
+
+	_, err = client.PutObject(context.Background(), putObjectInput)
+	fmt.Println(err)
+}
+
+func storeInGoogleBucket(data []byte, filename string) {
 	bucket := os.Getenv("STORAGE_BUCKET")
 	keyPath := os.Getenv("KEY_PATH")
 
