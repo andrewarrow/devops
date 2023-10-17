@@ -16,9 +16,11 @@ import (
 
 var ReverseProxyBackend *httputil.ReverseProxy
 var ReverseProxyWeb *httputil.ReverseProxy
+var ReverseProxyDev *httputil.ReverseProxy
 
 var BackendPort int = 8080
 var WebPort int = 3000
+var DevPort int = 3002
 
 var BalancerGuid = os.Getenv("BALANCER_GUID")
 
@@ -84,6 +86,8 @@ func handleRequest(writer http.ResponseWriter, request *http.Request) {
 		ReverseProxyBackend.ServeHTTP(writer, request)
 	} else if strings.Contains(host, "web") {
 		ReverseProxyWeb.ServeHTTP(writer, request)
+	} else if strings.Contains(host, "dev.") {
+		ReverseProxyDev.ServeHTTP(writer, request)
 	} else {
 		ReverseProxyWeb.ServeHTTP(writer, request)
 	}
@@ -93,6 +97,7 @@ func Serve() {
 	domainList := os.Getenv("BALANCER_DOMAINS")
 	ReverseProxyBackend = makeReverseProxy(BackendPort, false)
 	ReverseProxyWeb = makeReverseProxy(WebPort, false)
+	ReverseProxyDev = makeReverseProxy(DevPort, false)
 
 	cfg := simplecert.Default
 	cfg.Domains = strings.Split(domainList, ",")

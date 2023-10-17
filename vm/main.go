@@ -58,6 +58,9 @@ WantedBy=multi-user.target
 		//Run("root", ip, "apt install -y postgresql")
 		// CREATE EXTENSION postgis;
 		// CREATE EXTENSION postgis_topology;
+		// CREATE INDEX idx_full_text_search ON your_table USING GIN(your_tsvector_column);
+		// SELECT * FROM your_table WHERE your_tsvector_column @@ to_tsquery('search_term');
+
 		Run("root", ip, `'psql --user=postgres -c "CREATE USER fred WITH SUPERUSER PASSWORD 'fred'"'`)
 		Run("root", ip, `'psql --user=postgres -c "CREATE database feedback"'`)
 		Run("root", ip, `'psql --user=postgres -c "CREATE EXTENSION IF NOT EXISTS citext"'`)
