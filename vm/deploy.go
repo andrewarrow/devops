@@ -7,6 +7,18 @@ import (
 	"os/exec"
 )
 
+func DeployDev(ip string) {
+	deployDev := fmt.Sprintf(runScriptDeploy, ip, "dev")
+	scriptDev := fmt.Sprintf(runDevScript)
+	ioutil.WriteFile("deploy-dev.sh", []byte("#!/bin/bash\n\n"+deployDev), 0755)
+	ioutil.WriteFile("script-dev.sh", []byte(scriptDev), 0755)
+	Scp("aa", "../web/web", ip, "/home/aa/web")
+	b, err := exec.Command("./deploy-dev.sh").CombinedOutput()
+	fmt.Println(string(b), err)
+	os.Remove("deploy-dev.sh")
+	os.Remove("script-dev.sh")
+}
+
 func DeployWebSingle(ip, port string) {
 	deploy3001 := fmt.Sprintf(runScriptDeploy, ip, "3001")
 	script3001 := fmt.Sprintf(runScript, "3001", "3001", "3001")
@@ -49,6 +61,10 @@ var runScriptDeploy = `ssh -i ~/.ssh/root root@%s 'bash -s' < script-%s.sh`
 var runScript = `systemctl stop web-%s.service
 mv /home/aa/web /home/aa/web-%s
 systemctl start web-%s.service
+`
+var runDevScript = `systemctl stop dev.service
+mv /home/aa/web /home/aa/dev
+systemctl start dev.service
 `
 
 var deployScript = `#!/bin/bash
