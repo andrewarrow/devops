@@ -75,10 +75,10 @@ WantedBy=multi-user.target
 	} else if command == "deploy-dev" {
 		DeployDev(ip)
 	} else if command == "deploy-balancer" {
-		Scp("aa", "../balancer/balancer", ip, "/home/aa/balancer2")
-		Run("root", ip, "systemctl stop balancer.service")
-		Run("aa", ip, `"mv /home/aa/balancer2 /home/aa/balancer"`)
-		Run("root", ip, "systemctl start balancer.service")
+		Run("root", ip, "'systemctl stop balancer'")
+		Scp("aa", "../balancer/balancer", ip, "/home/aa/balancer")
+		//Run("aa", ip, "mv /home/aa/balancer2 /home/aa/balancer")
+		Run("root", ip, "'systemctl start balancer'")
 	} else if command == "env" {
 		guid := PseudoUuid()
 		email := os.Args[2]
