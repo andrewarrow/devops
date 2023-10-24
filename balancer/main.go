@@ -5,6 +5,6 @@ package main
 import "balancer/server"
 
 func main() {
-	//server.Serve()
-	server.ServeCertFromFile()
+	server.Serve()
+	//server.ServeCertFromFile()
 }

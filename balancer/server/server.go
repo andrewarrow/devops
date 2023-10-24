@@ -44,6 +44,12 @@ func handleRequest(writer http.ResponseWriter, request *http.Request) {
 	path := request.URL.Path
 	//request.Header.Get("X-CSRF-Token")
 	request.Header.Set("X-Forwarded-Proto", "https")
+	ip := request.RemoteAddr
+	tokens := strings.Split(ip, ":")
+	if len(tokens) > 1 {
+		request.Header.Set("X-Real-Ip", tokens[0])
+	}
+
 	/*
 		for key, values := range request.Header {
 			fmt.Printf("%s: %s\n", key, values)
