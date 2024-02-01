@@ -19,4 +19,11 @@ func InstallEtc() {
 
 	b, err = exec.Command("scp", "-i", pem, "send.tar", who+"@"+ip+":").CombinedOutput()
 	fmt.Println(string(b), err == nil)
+
+	send := `sudo mv /home/ec2-user/send.tar /
+  sudo cd /
+	sudo tar -xf send.tar`
+	b, err = exec.Command("ssh", "-i", pem, who+"@"+ip,
+		"<<<", send).CombinedOutput()
+	fmt.Println(string(b), err == nil)
 }
