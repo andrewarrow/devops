@@ -28,6 +28,8 @@ func main() {
 		Scp(who, file, ip, dest)
 	} else if command == "log" {
 		GetLog(os.Args[2])
+	} else if command == "etc" {
+		InstallEtc()
 	} else if command == "reload" {
 		service := os.Args[2]
 		ReloadService(service, ip)
