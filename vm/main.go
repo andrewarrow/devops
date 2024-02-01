@@ -26,6 +26,8 @@ func main() {
 		dest := os.Args[3]
 		who = os.Args[4]
 		Scp(who, file, ip, dest)
+	} else if command == "log" {
+		GetLog(os.Args[2])
 	} else if command == "reload" {
 		service := os.Args[2]
 		ReloadService(service, ip)
