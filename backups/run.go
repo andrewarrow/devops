@@ -27,14 +27,14 @@ func Run(db string) {
 func RunOnce(db string) {
 	now := time.Now().Unix()
 	filename := fmt.Sprintf("%s_%d.sql", db, now)
-	b, err := exec.Command("bash", "-c", fmt.Sprintf("pg_dump postgres://fred:fred@localhost:5432/%s > %s", db, filename)).CombinedOutput()
+	b, err := exec.Command("bash", "-c", fmt.Sprintf("pg_dump --inserts --table=stores --table=flex_stores --table=configs --table=searches --table=admins --table=links --table=users postgres://fred:fred@localhost:5432/%s > %s", db, filename)).CombinedOutput()
 	fmt.Println(string(b), err)
 	b, err = exec.Command("gzip", filename).CombinedOutput()
 	fmt.Println(string(b), err)
 	filename = filename + ".gz"
 	asBytes, _ := ioutil.ReadFile(filename)
-	//storeInGoogleBucket(asBytes, filename)
-	storeInAwsBucket(asBytes, filename)
+	storeInGoogleBucket(asBytes, filename)
+	//storeInAwsBucket(asBytes, filename)
 }
 
 func storeInAwsBucket(data []byte, filename string) {

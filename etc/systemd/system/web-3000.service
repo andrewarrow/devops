@@ -1,0 +1,15 @@
+[Unit]
+Description=web3000
+After=network.target network-online.target
+Requires=network-online.target
+
+[Service]
+User=aa
+Group=aa
+EnvironmentFile=/etc/systemd/system/aa.conf
+ExecStart=/home/aa/web-3000 run 3000
+Restart=on-failure
+RestartSec=1s
+
+[Install]
+WantedBy=multi-user.target

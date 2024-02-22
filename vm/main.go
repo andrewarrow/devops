@@ -80,7 +80,8 @@ WantedBy=multi-user.target
 		DeployDev(ip)
 	} else if command == "deploy-balancer" {
 		Run("root", ip, "'systemctl stop balancer'")
-		Scp("aa", "../balancer/balancer", ip, "/home/aa/balancer")
+		//Scp("aa", "../balancer/balancer", ip, "/home/aa/balancer")
+		Scp("root", "../balancer/balancer", ip, "/home/ec2-user/balancer")
 		//Run("aa", ip, "mv /home/aa/balancer2 /home/aa/balancer")
 		Run("root", ip, "'systemctl start balancer'")
 	} else if command == "env" {

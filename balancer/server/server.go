@@ -88,7 +88,7 @@ func handleRequest(writer http.ResponseWriter, request *http.Request) {
 	}
 
 	host := request.Host
-	if strings.Contains(host, "api") {
+	if strings.Contains(host, "other") {
 		ReverseProxyBackend.ServeHTTP(writer, request)
 	} else if strings.Contains(host, "web") {
 		ReverseProxyWeb.ServeHTTP(writer, request)
