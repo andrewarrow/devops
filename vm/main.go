@@ -75,7 +75,7 @@ WantedBy=multi-user.target
 		domain := os.Args[2]
 		DeployWeb(domain, ip)
 	} else if command == "deploy-single" {
-		DeployWebSingle(ip, "3001")
+		DeployWebSingle(ip, os.Args[2])
 	} else if command == "deploy-dev" {
 		DeployDev(ip)
 	} else if command == "deploy-balancer" {
