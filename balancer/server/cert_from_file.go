@@ -10,15 +10,14 @@ import (
 )
 
 func ServeCertFromFile() {
-	//domainList := os.Getenv("BALANCER_DOMAINS")
-	ReverseProxyBackend = makeReverseProxy(BackendPort, false)
 	ReverseProxyWeb = makeReverseProxy(WebPort, false)
 
 	go http.ListenAndServe(":80", http.HandlerFunc(simplecert.Redirect))
-	go http.ListenAndServe(":8082", http.HandlerFunc(handleLocal))
 
-	path := "/certs/file.cert"
-	tlsconf, err := loadTLSConfigFromFile(path)
+	domain := "apps.greyspace.co"
+	path1 := fmt.Sprintf("/etc/letsencrypt/live/%s/fullchain.pem", domain)
+	path2 := fmt.Sprintf("/etc/letsencrypt/live/%s/privkey.pem", domain)
+	tlsconf, err := loadTLSConfigFromFile(path1, path2)
 	fmt.Println(err)
 
 	handler := http.HandlerFunc(handleRequest)
@@ -35,8 +34,21 @@ func ServeCertFromFile() {
 		time.Sleep(time.Second)
 	}
 }
+func loadTLSConfigFromFile(path1, path2 string) (*tls.Config, error) {
 
-func loadTLSConfigFromFile(filePath string) (*tls.Config, error) {
+	serverCert, err := tls.LoadX509KeyPair(path1, path2)
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+
+	tlsconf := &tls.Config{
+		Certificates: []tls.Certificate{serverCert},
+	}
+	return tlsconf, nil
+}
+
+func loadTLSConfigFromFileInt(filePath string) (*tls.Config, error) {
 
 	intermediateCert, err := tls.LoadX509KeyPair("/certs/int.crt", "")
 	fmt.Println(err)

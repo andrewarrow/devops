@@ -2,10 +2,7 @@ module balancer
 
 go 1.19
 
-require (
-	github.com/foomo/simplecert v1.8.6
-	github.com/foomo/tlsconfig v0.0.0-20180418120404-b67861b076c9
-)
+require github.com/foomo/simplecert v1.8.6
 
 require (
 	cloud.google.com/go v0.75.0 // indirect
@@ -34,6 +31,7 @@ require (
 	github.com/dnsimple/dnsimple-go v0.63.0 // indirect
 	github.com/exoscale/egoscale v0.40.0 // indirect
 	github.com/fatih/structs v1.1.0 // indirect
+	github.com/foomo/tlsconfig v0.0.0-20180418120404-b67861b076c9 // indirect
 	github.com/form3tech-oss/jwt-go v3.2.2+incompatible // indirect
 	github.com/go-acme/lego/v4 v4.1.3 // indirect
 	github.com/go-errors/errors v1.1.1 // indirect

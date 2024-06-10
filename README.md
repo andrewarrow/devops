@@ -195,3 +195,39 @@ if you want to make logic changes to the balancer you can deploy it with:
 ```
 ./vm deploy-balancer
 ```
+
+```
+
+func Serve() {
+	domainList := os.Getenv("BALANCER_DOMAINS")
+	ReverseProxyBackend = makeReverseProxy(BackendPort, false)
+	ReverseProxyWeb = makeReverseProxy(WebPort, false)
+
+	cfg := simplecert.Default
+	cfg.Domains = strings.Split(domainList, ",")
+	cfg.CacheDir = "/certs"
+	cfg.SSLEmail = os.Getenv("BALANCER_EMAIL")
+	certReloader, err := simplecert.Init(cfg, nil)
+	fmt.Println("err", err)
+
+	go http.ListenAndServe(":80", http.HandlerFunc(simplecert.Redirect))
+	go http.ListenAndServe(":8082", http.HandlerFunc(handleLocal))
+
+	tlsconf := tlsconfig.NewServerTLSConfig(tlsconfig.TLSModeServerStrict)
+	tlsconf.GetCertificate = certReloader.GetCertificateFunc()
+
+	handler := http.HandlerFunc(handleRequest)
+
+	s := &http.Server{
+		Addr:      ":443",
+		Handler:   handler,
+		TLSConfig: tlsconf,
+	}
+
+	s.ListenAndServeTLS("", "")
+
+	for {
+		time.Sleep(time.Second)
+	}
+}
+```
