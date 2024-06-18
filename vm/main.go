@@ -67,7 +67,9 @@ WantedBy=multi-user.target
 	} else if command == "deploy-web" {
 		domain := os.Args[2]
 		DeployWeb(domain, ip)
-	} else if command == "deploy-single" {
+	} else if command == "deploy-single-3000" {
+		DeployWebSingle(ip, "3000")
+	} else if command == "deploy-single-3001" {
 		DeployWebSingle(ip, "3001")
 	} else if command == "deploy-balancer" {
 		Scp("aa", "../balancer/balancer", ip, "/home/aa/balancer2")
