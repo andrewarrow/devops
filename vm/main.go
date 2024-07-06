@@ -73,6 +73,10 @@ WantedBy=multi-user.target
 		DeployWebSingle(ip, "3001")
 	} else if command == "deploy-single-3002" {
 		DeployWebSingle(ip, "3002")
+	} else if command == "deploy-single-3003" {
+		DeployWebSingle(ip, "3003")
+	} else if command == "deploy-single-3004" {
+		DeployWebSingle(ip, "3004")
 	} else if command == "deploy-balancer" {
 		Scp("aa", "../balancer/balancer", ip, "/home/aa/balancer2")
 		Run("root", ip, "systemctl stop balancer.service")
